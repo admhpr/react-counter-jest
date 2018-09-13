@@ -4,11 +4,15 @@ import { shallow } from 'enzyme';
 /**
  * Factory function to create a shallow wrapper for App
  * @param {object} props 
- * @param {any} state
+ * @param {object} state
  * @returns {ShallowWrapper} 
  */
 const setup = (props={}, state=null) => {
-    return shallow(<App {...props}/>)
+    const wrapper = shallow(<App {...props}/>);
+    if(state){
+        wrapper.setState(state);
+    }
+    return wrapper;
 }
 /**
  * Find the data-test attribute on component
@@ -39,10 +43,19 @@ test('renders counter display', () => {
 
 test('counter starts at 0', () => {
     const wrapper = setup();
-    initialState = wrapper.state('counter');
-    expect(initialState).toBe(0)
+    const initialState = wrapper.state('counter');
+    expect(initialState).toBe(0);
 })
 
 test('clicking the button increments the counter display', () => {
+    const counter = 7;
+    const wrapper = setup(null, { counter });
+    const button = findByAttr(wrapper, 'increment-button');
+    button.simulate('click');
+    wrapper.update();
+
+    const counterDisplay = findByAttr(wrapper, 'counter');
+    expect(counterDisplay.text()).toContain( counter + 1 );
+
 
 })
