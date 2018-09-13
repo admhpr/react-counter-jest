@@ -11,7 +11,7 @@ const setup = (props={}, state=null) => {
     return shallow(<App {...props}/>)
 }
 /**
- * 
+ * Find the data-test attribute on component
  * @param {ShallowWrapper} wrapper 
  * @param {string} val 
  */
@@ -38,7 +38,9 @@ test('renders counter display', () => {
 })
 
 test('counter starts at 0', () => {
-
+    const wrapper = setup();
+    initialState = wrapper.state('counter');
+    expect(initialState).toBe(0)
 })
 
 test('clicking the button increments the counter display', () => {
