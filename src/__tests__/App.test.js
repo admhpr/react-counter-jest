@@ -56,6 +56,31 @@ test('clicking the button increments the counter display', () => {
 
     const counterDisplay = findByAttr(wrapper, 'counter');
     expect(counterDisplay.text()).toContain( counter + 1 );
+})
 
+test('clicking the button decrements the counter display', () => {
+    const counter = 7;
+    const wrapper = setup(null, { counter });
+    const button = findByAttr(wrapper, 'decrement-button');
+    button.simulate('click');
 
+    const counterDisplay = findByAttr(wrapper, 'counter');
+    expect(counterDisplay.text()).toContain( counter - 1 )
+})
+
+test('error message is hidden if not needed', () => {
+    const wrapper = setup();
+    const errorDiv = findByAttr(wrapper, 'error-message');
+
+    const errorHasHiddenClass = errorDiv.hasClass('hidden');
+    expect(errorHasHiddenClass).toBe(true);
+})
+
+test('counter is not decremented if already at 0', () => {
+    const counter = 0
+    const wrapper = setup(null, { counter });
+    const button = findByAttr(wrapper, 'decrement-button');
+    button.simulate('click');
+    const counterDisplay = findByAttr(wrapper, 'counter');
+    expect(counterDisplay.text()).toContain(counter)
 })
